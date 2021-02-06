@@ -4,7 +4,7 @@ Code to generate random Noddy models, together with example notebook to visualis
 
 ![Example output](images/example.png)
    
-Windows installer is available at the <a href="http://tectonique.net/noddy">Noddy Site</a>
+Windows installer is available at the <a href="http://tectonique.net/noddy" target="_blank">Noddy Site</a>
    
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Loop3D/noddyverse/HEAD?filepath=noddyverse%20remote%20files.ipynb)
