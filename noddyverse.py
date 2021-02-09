@@ -147,7 +147,7 @@ def display_models(his_filter,display_number):
         print(ran,file_split[2],'STRATIGRAPHY TILT',models2.iloc[ran]['event_all'])
 
         if(show):
-            fig, ax = plt.subplots(1,5,figsize=(10,10))
+            fig, ax = plt.subplots(1,5,figsize=(13,13))
             ax[0].axis('off')
             ax[1].axis('off')
             ax[2].axis('off')
