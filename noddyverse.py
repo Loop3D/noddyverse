@@ -110,8 +110,7 @@ def display_models(his_filter,display_number):
     now = time.time()
     seed(int(now))
 
-    url='https://cloudstor.aarnet.edu.au/plus/s/OUe6J9iWW1SnKjw/download?path=%2F'
-
+    url='https://cloudstor.aarnet.edu.au/plus/s/8ZT6tjOvoLWmLPx/download?path=%2f'
     used=[]
     z=0
     fail=0
