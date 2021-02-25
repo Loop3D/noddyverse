@@ -1,11 +1,11 @@
 # noddyverse [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Loop3D/noddyverse/HEAD?filepath=noddyverse%20remote%20files.ipynb)
 
 
-Code to generate random Noddy models, together with example notebook to visualise randomly selected models from 10K subset of 1M model suite:
+C Code to generate random Noddy models, together with example notebook to visualise randomly selected models from 1M model suite:
 
 ![Example output](images/example.png)
    
-Windows installer is available at the <a href="http://tectonique.net/noddy" target="_blank">Noddy Site</a>
+Noddy Windows installer (non-randomiser version) is available at the <a href="http://tectonique.net/noddy" target="_blank">Noddy Site</a>
    
 
 
