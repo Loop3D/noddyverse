@@ -10,7 +10,7 @@ For each model the magnetic response, the gravity response, the top surface, the
    
 ![Example output](images/example.png)
    
-The models consist of 20 m cubic voxels (200x200x200 voxels per model), and the history file used to define each model is provided as a link for each model. Windows software to read this history file is available at the <a href="http://tectonique.net/noddy">Noddy Site</a>, and the source code for a command line version of Noddy, as well as this notebook, is available here. The 1M models themselves are stored at  <a href="https://cloudstor.aarnet.edu.au/plus/s/OUe6J9iWW1SnKjw">Cloudstor</a> as individual files and as 343 tar files, one per history sequence from <a href="https://cloudstor.aarnet.edu.au/plus/s/UxnVSkHfnr7chW9">here</a>.
+The models consist of 20 m cubic voxels (200x200x200 voxels per model), and the history file used to define each model is provided as a link for each model. Windows software to read this history file is available at the <a href="http://tectonique.net/noddy">Noddy Site</a>, and the source code for a command line version of Noddy, as well as this notebook, is available here. The 1M models themselves are stored at  <a href="https://cloudstor.aarnet.edu.au/plus/s/7p4oN3vsrHRgm4q">Cloudstor</a> as individual files and as 343 tar files, one per history sequence from <a href="https://cloudstor.aarnet.edu.au/plus/s/UxnVSkHfnr7chW9">here</a>.
    
 
 
