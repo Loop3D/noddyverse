@@ -156,7 +156,7 @@ def display_models(his_filter,display_number):
             ax[1].title.set_text('Grav')
             ax[2].title.set_text('Map')
             ax[3].title.set_text('E    (N)    W')
-            ax[4].title.set_text('N    (E)    S')
+            ax[4].title.set_text('N    (W)    S')
             ax[0].imshow(mag,cmap='rainbow')
             ax[1].imshow(grv,cmap='rainbow')
             ax[2].imshow(mod2[0,:,:],cmap=cmap, interpolation="nearest",vmin=vmin,vmax=vmax)
