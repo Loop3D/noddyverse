@@ -4,7 +4,7 @@
 
 
 
- [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Loop3D/noddyverse/HEAD?filepath=noddyverse-remote-files-1M.ipynb)
+ [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/Loop3D/noddyverse/HEAD?filepath=noddyverse-remote-files-1M.ipynb) <<--not working!!
 
 
 C Code to generate random Noddy models, together with example notebook to visualise randomly selected models from 1M model suite:
