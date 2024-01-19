@@ -1,6 +1,6 @@
 # noddyverse 
 
-## With the closure of Cloustor, which stored the Noddyverse files, access to the Noddyverse is unfortunately not possible at the moment. I am investigating various solutions for at least accessing the raw models which should be available by the end of January. More news as it comes to hand. Mark Jessell Jan/2024
+## With the closure of Cloustor, which stored the Noddyverse files, direct  programmatic access to the Noddyverse is unfortunately not possible at the moment. If you want a link to download the entire model suite as a set of 343 tar files (one for each event sequence) you can email me and I will send you a link. Mark Jessell mark.jessell@uwa.edu.au Jan/2024
 
 
 
