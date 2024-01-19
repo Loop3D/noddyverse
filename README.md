@@ -1,6 +1,6 @@
 # noddyverse 
 
-## With the closure of Cloustor, which stored the Noddyverse files, access to the Noddyverse is unfortunately not possibel at the moment. I am investigating various solutions for at least accessing hte raw models which should be availabel by the end of January. More news as it comes to hand. Mark Jessell Jan/2024
+## With the closure of Cloustor, which stored the Noddyverse files, access to the Noddyverse is unfortunately not possible at the moment. I am investigating various solutions for at least accessing the raw models which should be available by the end of January. More news as it comes to hand. Mark Jessell Jan/2024
 
 
 
