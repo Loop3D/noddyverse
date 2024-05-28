@@ -79,13 +79,16 @@ int RandomNoddy(char *output , int DataBase) {
 
 	report_Random_status(output, DataBase);
 
-	doGeophysics(BLOCK_AND_ANOM, viewOptions, geophOptions, output, output,
-			NULL, 0, NULL, NULL, NULL);
+	//doGeophysics(BLOCK_AND_ANOM, viewOptions, geophOptions, output, output,
+	//		NULL, 0, NULL, NULL, NULL);
+	doGeophysics(BLOCK_ONLY, viewOptions, geophOptions, output, output,
+			NULL, 0, NULL, NULL, NULL); //vitaliy
 
 }
 
 int readRandomHist() {
-	int numEvents = 5; // number of random events, including base STRATIGRAPHY and first TILT
+	//int numEvents = 5; // number of random events, including base STRATIGRAPHY and first TILT
+	int numEvents = 2+(xrshr128p_next(&state) % 3); //vitaliy // number of random events, including base STRATIGRAPHY and first TILT
 
 	loadRandomHistory(numEvents);
 
@@ -155,8 +158,8 @@ static int loadRandomHistory(numEvents)
 			else if (event == 1)
 				type2 = TILT;
 			else {
-				type = (int) (xrshr128p_next(&state) % 10) + 1;
-
+				//type = (int) (xrshr128p_next(&state) % 10) + 1;
+				type=9; //vitaliy
 				if (type == 1 || type == 2)
 					type2 = FOLD;
 				else if (type == 3 || type == 4)
@@ -465,7 +468,8 @@ int loadRandomBlockOpts()
 	currentView = 1;
 
 	sprintf(vname, "View1");
-	viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
+	//viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
+	viewOptions = newViewOptions(vname, 0, 0, 6400, 6400, 3200, 3200, 100, 100); //vitaliy
 
 	/*blockViewOptions->originX = 0;
 	 blockViewOptions->originY = 0;
@@ -1023,7 +1027,8 @@ int loadRandomPlug(options)
 
 	//  printf("PLUGGGSSSSSS\n");
 
-	plugit = xrshr128p_next(&state) % 4;
+	//plugit = xrshr128p_next(&state) % 4;
+	plugit = 3; //vitaliy
 	if (plugit == 0)
 		options->type = CYLINDRICAL_PLUG;
 	else if (plugit == 1)
@@ -1040,7 +1045,8 @@ int loadRandomPlug(options)
 	options->positionZ = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
 
 	options->dipDirection = 360.0 * xrshr128p_next_double(&state);
-	options->dip = 90.0 * xrshr128p_next_double(&state);
+	//options->dip = 90.0 * xrshr128p_next_double(&state);
+	options->dip = 90.0 ; //vitaliy
 	options->axisPitch = 90.0 * xrshr128p_next_double(&state);
 
 	options->radius = 2000.0 * xrshr128p_next_double(&state);
@@ -1174,7 +1180,8 @@ int loadRandomStratigraphy(options)
 	int i;
 	int maxLayers = 5; // maximum number of layers (minimum is 2)
 
-	options->numLayers = (xrshr128p_next(&state) % 5) + 2;
+	//options->numLayers = (xrshr128p_next(&state) % 5) + 2;
+	options->numLayers = 1; //vitaliy
 	if (options->properties)
 		xvt_mem_free((char* ) options->properties);
 	if (!(options->properties = (LAYER_PROPERTIES*) xvt_mem_zalloc(
@@ -1208,7 +1215,7 @@ int petrophysics(  int litho,  double *density, double *magsus)
 
   X=sqrt(-2.0*log(U)) * cos(2.0*3.1415927*V); //where U & V are random numbers between 0 & 1
   Y=sqrt(-2.0*log(U)) * sin(2.0*3.1415927*V); //produces pairs of independaent normally dist random numbers using
-  	  	  	  	  	  	  	  	  	  	  	  //Box–Muller transform
+  	  	  	  	  	  	  	  	  	  	  	  //Boxï¿½Muller transform
 
   *density=X*(PPHYS_ROCK[litho].density_sd)+PPHYS_ROCK[litho].density_mean;
 
@@ -1244,13 +1251,15 @@ int loadRandomProperties(layer, options)
 	}
 	else if(layer==-1) //plug
 	{
-		lithocode=(xrshr128p_next(&state) % rocktypes[1]) +rocktypes[0];
+		//lithocode=(xrshr128p_next(&state) % rocktypes[1]) +rocktypes[0];
+		lithocode=2 //granite //vitaliy
 		petrophysics(lithocode, &density, &magsus );
 	}
 	else //strat
 	{
 		if(layer==0)
-			stratcode=(xrshr128p_next(&state) % 3);
+			//stratcode=(xrshr128p_next(&state) % 3);
+			stratcode=2;
 		if(stratcode==0) //Met
 		{
 			lithocode=(xrshr128p_next(&state) % rocktypes[2])+rocktypes[0]+rocktypes[1];
@@ -1264,7 +1273,8 @@ int loadRandomProperties(layer, options)
 		}
 		else //Sed
 		{
-			lithocode=(xrshr128p_next(&state) % rocktypes[4])+rocktypes[0]+rocktypes[1]+rocktypes[2]+rocktypes[3];
+			//lithocode=(xrshr128p_next(&state) % rocktypes[4])+rocktypes[0]+rocktypes[1]+rocktypes[2]+rocktypes[3];
+			lithocode=30 //limestone //vitaliy
 			petrophysics( lithocode, &density, &magsus );
 
 		}

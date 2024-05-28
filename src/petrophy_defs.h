@@ -11,7 +11,8 @@ PPHYS PPHYS_ROCK[35]={
 "Fels_Dyke_Sill", Dyke, Intrusive, Felsic_Dyke_Sill, 2.612593, .090526329, -3.693262, 1.50094258, 1, //litho=0
 "Maf_Dyke_Sill", Dyke, Intrusive, Mafic_Dyke_Sill, 2.793914, .015759637, -2.119223, .85376583, 0,
 
-"Granite", Plug, Intrusive, Granite , 2.691577, .094589692, -2.455842, .86575449, 1,
+//"Granite", Plug, Intrusive, Granite , 2.691577, .094589692, -2.455842, .86575449, 1,
+"Granite", Plug, Intrusive, Granite , 0.75, .25, -2.455842, .86575449, 0, //vitaliy
 "Peridotite", Plug, Intrusive, Peridotite, 2.851076, .154478049, -1.158807, .4390425, 0,
 "Porphyry", Plug, Intrusive, Porphyry, 2.840024, .128971814, -2.613833, .99194475, 1,
 "Pyxen_Hbnd", Plug, Intrusive, Pyxenite_Hbndite, 3.194379, .253322535, -1.946615, 1.03641373, 0,
@@ -42,7 +43,8 @@ PPHYS PPHYS_ROCK[35]={
 "V_Siltstone", Met_strat, Volcanic, V_Siltstone, 2.859347, .102741619, -2.769054, .87771183, 0,
 
 "Conglomerate", Strat, Sediment, Conglomerate, 2.618695, .116158268, -3.31026, .9740717, 0,
-"Limestone", Strat, Sediment, Limestone, 2.713912, .147683486, -4.256256, .87772406, 0, //litho=30
+//"Limestone", Strat, Sediment, Limestone, 2.713912, .147683486, -4.256256, .87772406, 0, //litho=30
+"Limestone", Strat, Sediment, Limestone, 0.0, .0, -4.256256, .87772406, 0, //litho=30 //vitaliy
 "Pelite", Strat, Sediment, Pelite , 2.698554, .021464631, -3.369295, .5295974, 1,
 "Phyllite", Strat, Sediment, Phyllite, 2.739177, .173374383, -3.696455, .73955588, 0,
 "Sandstone", Strat, Sediment, Sandstone, 2.622672, .107003083, -3.452758, .64521521, 0,
