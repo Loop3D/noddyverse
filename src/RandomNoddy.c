@@ -1252,7 +1252,7 @@ int loadRandomProperties(layer, options)
 	else if(layer==-1) //plug
 	{
 		//lithocode=(xrshr128p_next(&state) % rocktypes[1]) +rocktypes[0];
-		lithocode=2 //granite //vitaliy
+		lithocode=2; //granite //vitaliy
 		petrophysics(lithocode, &density, &magsus );
 	}
 	else //strat
@@ -1274,7 +1274,7 @@ int loadRandomProperties(layer, options)
 		else //Sed
 		{
 			//lithocode=(xrshr128p_next(&state) % rocktypes[4])+rocktypes[0]+rocktypes[1]+rocktypes[2]+rocktypes[3];
-			lithocode=30 //limestone //vitaliy
+			lithocode=30; //limestone //vitaliy
 			petrophysics( lithocode, &density, &magsus );
 
 		}
