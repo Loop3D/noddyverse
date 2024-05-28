@@ -14,6 +14,7 @@
 #include "petrophy_defs.h"
 
 
+
 #define DEBUG(X)    
 #define DEBUG1(X)   
 
@@ -87,8 +88,10 @@ int RandomNoddy(char *output , int DataBase) {
 }
 
 int readRandomHist() {
+	srand(time(NULL));   //vitaliy // Initialization, should only be called once.
+	int ellipses2 = 1+(rand()%3);  //vitaliy    // Returns a pseudo-random integer between 0 and RAND_MAX.
 	//int numEvents = 5; // number of random events, including base STRATIGRAPHY and first TILT
-	int numEvents = 2+(xrshr128p_next(&state) % 3); //vitaliy // number of random events, including base STRATIGRAPHY and first TILT
+	int numEvents = 2+ellipses2; //vitaliy // number of random events, including base STRATIGRAPHY and first TILT
 
 	loadRandomHistory(numEvents);
 
@@ -469,7 +472,7 @@ int loadRandomBlockOpts()
 
 	sprintf(vname, "View1");
 	//viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
-	viewOptions = newViewOptions(vname, 0, 0, 6400, 6400, 3200, 3200, 100, 100); //vitaliy
+	viewOptions = newViewOptions(vname, 0, 0, 3200, 6400, 6400, 3200, 100, 100); //vitaliy
 
 	/*blockViewOptions->originX = 0;
 	 blockViewOptions->originY = 0;
