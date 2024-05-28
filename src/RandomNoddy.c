@@ -570,7 +570,8 @@ int loadRandomGpsOpts() {
 	geophysicsOptions.constantBoxDepth = 0.0;
 	geophysicsOptions.cleverBoxRatio = 1.0;
 
-	geophysicsOptions.deformableRemanence = FALSE;
+	geophysicsOptions.deformableRemanence = TRUE;
+	//geophysicsOptions.deformableRemanence = FALSE; //vitaliy
 
 	geophysicsOptions.deformableAnisotropy = FALSE;
 
@@ -1307,7 +1308,8 @@ int loadRandomProperties(layer, options)
 	options->sus_dip = 0;
 	options->sus_dipDirection = 0;
 	options->sus_pitch = 0;
-	options->remanentMagnetization = 0;
+	options->remanentMagnetization = 1; //vitaliy
+	//options->remanentMagnetization = 0;
 	options->inclination = 0;
 	options->angleWithNorth = 0;
 	options->strength = 0;
