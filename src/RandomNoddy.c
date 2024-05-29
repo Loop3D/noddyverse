@@ -1056,17 +1056,17 @@ int loadRandomPlug(options)
 	options->radius = 2000.0 * xrshr128p_next_double(&state);
 	options->apicalAngle = 10.0 + 80.0 * xrshr128p_next_double(&state);
 	options->BValue = 200 + 4800.0 * xrshr128p_next_double(&state);
-	options->axisA = 200 + 3800.0 * xrshr128p_next_double(&state);
-	options->axisB = 200 + 3800.0 * xrshr128p_next_double(&state);
-	options->axisC = 200 + 3800.0 * xrshr128p_next_double(&state);
+	options->axisA = 200 + 800.0 * xrshr128p_next_double(&state);
+	options->axisB = 200 + 800.0 * xrshr128p_next_double(&state);
+	options->axisC = 200 + 800.0 * xrshr128p_next_double(&state);
 
 	if (options->type != ELLIPSOIDAL_PLUG)
 		pitch = 0.0;
 	else
 		pitch = options->axisPitch;
 
-	//options->alterationZones = NONE_ALTERATION; //vitaliy
-	options->alterationZones = BOTH_ALTERATION;
+	options->alterationZones = NONE_ALTERATION; //vitaliy
+	//options->alterationZones = TRUE;
 
 	loadRandomProperties(-1, &(options->properties));
 
@@ -1196,7 +1196,7 @@ int loadRandomStratigraphy(options)
 	for (i = 0; i < options->numLayers; i++) {
 		loadRandomProperties(i, &(options->properties[i]));
 	}
-	//options->applyAlterations=TRUE; //vitaliy
+
 	return (TRUE);
 }
 
@@ -1299,8 +1299,8 @@ int loadRandomProperties(layer, options)
 		cum_height += options->height;
 		options->height = cum_height;
 	}
-	//options->applyAlterations = FALSE; //vitaliy
-	options->applyAlterations = TRUE;
+	options->applyAlterations = FALSE; //vitaliy
+	//options->applyAlterations = TRUE;
 
 	options->density = density;
 	options->anisotropicField = 0;
