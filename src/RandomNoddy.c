@@ -1065,7 +1065,8 @@ int loadRandomPlug(options)
 	else
 		pitch = options->axisPitch;
 
-	options->alterationZones = NONE_ALTERATION;
+	//options->alterationZones = NONE_ALTERATION; //vitaliy
+	options->alterationZones = BOTH_ALTERATION;
 
 	loadRandomProperties(-1, &(options->properties));
 
@@ -1195,7 +1196,7 @@ int loadRandomStratigraphy(options)
 	for (i = 0; i < options->numLayers; i++) {
 		loadRandomProperties(i, &(options->properties[i]));
 	}
-
+	//options->applyAlterations=TRUE; //vitaliy
 	return (TRUE);
 }
 
@@ -1298,7 +1299,8 @@ int loadRandomProperties(layer, options)
 		cum_height += options->height;
 		options->height = cum_height;
 	}
-	options->applyAlterations = FALSE;
+	//options->applyAlterations = FALSE; //vitaliy
+	options->applyAlterations = TRUE;
 
 	options->density = density;
 	options->anisotropicField = 0;
@@ -1308,8 +1310,8 @@ int loadRandomProperties(layer, options)
 	options->sus_dip = 0;
 	options->sus_dipDirection = 0;
 	options->sus_pitch = 0;
-	options->remanentMagnetization = 1; //vitaliy
-	//options->remanentMagnetization = 0;
+	//options->remanentMagnetization = 1; //vitaliy
+	options->remanentMagnetization = 0;
 	options->inclination = 0;
 	options->angleWithNorth = 0;
 	options->strength = 0;

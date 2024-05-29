@@ -490,7 +490,7 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
   // }
    //else
   // {
-      if (densityCalc && Random==0)
+      //if (densityCalc && Random==0) //vitaliy
       {
          addFileExtention (blockName, ANOM_DENSITY_FILE_EXT);
          write3DIregBlockToFile (blockName, (char ***) densityData,
@@ -1168,7 +1168,7 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
       aniCalc = remCalc = altZones = FALSE;
 
           /* Only calc alteration Zones if we have an event with one */
-      altZones =  checkHistoryForAlterations ();
+      altZones =  checkHistoryForAlterations ();//vitaliy
           
           /* Only calc remanence or anisotropy if we have a strat with it used in */
       for (i = 0; i < numStrat; i++)
