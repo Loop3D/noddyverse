@@ -88,7 +88,10 @@ int RandomNoddy(char *output , int DataBase) {
 }
 
 int readRandomHist() {
-	srand(time(NULL));   //vitaliy // Initialization, should only be called once.
+	struct timeval start;
+	gettimeofday(&start, NULL);
+
+	srand(start.tv_usec);   //vitaliy // Initialization, should only be called once.
 	int ellipses2 = 1+(rand()%3);  //vitaliy    // Returns a pseudo-random integer between 0 and RAND_MAX.
 	//int numEvents = 5; // number of random events, including base STRATIGRAPHY and first TILT
 	int numEvents = 2+ellipses2; //vitaliy // number of random events, including base STRATIGRAPHY and first TILT
@@ -1299,8 +1302,8 @@ int loadRandomProperties(layer, options)
 		cum_height += options->height;
 		options->height = cum_height;
 	}
-	options->applyAlterations = FALSE; //vitaliy
-	//options->applyAlterations = TRUE;
+	//options->applyAlterations = FALSE; //vitaliy
+	options->applyAlterations = TRUE;
 
 	options->density = density;
 	options->anisotropicField = 0;
