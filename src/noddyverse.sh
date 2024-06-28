@@ -4,7 +4,8 @@ counter=1
 while [ $counter -le 100 ]
 do
 	NOW=$(date +"%y-%m-%d-%H-%M-%S-%N")
+	NAME="model"$counter
 	#echo $NOW
-    ./noddy dikefault.his $NOW.his RANDOM 
+    ./noddy dikefault.his $NAME.his RANDOM 
     ((counter++))
 done
