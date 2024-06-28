@@ -385,8 +385,8 @@ float ****densityData,     ****magSusData,      ****remSusDecData,
    }
    
    return (TRUE);
-} 
- 
+}
+
 int
 #if XVT_CC_PROTO
 writeOutBlockModels (char *blockName, int numLayers, int **layerDimensions,
@@ -492,9 +492,13 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
   // {
       //if (densityCalc && Random==0) //vitaliy
       {
-         addFileExtention (blockName, ANOM_DENSITY_FILE_EXT);
-         write3DIregBlockToFile (blockName, (char ***) densityData,
-                       numLayers, layerDimensions, sizeof(float));
+         // Vitaliy: write model to binary file.
+         addFileExtention(blockName, ".bin");
+         write3DModelToBinaryFile(blockName, densityData, nx, ny, numLayers);
+
+//         addFileExtention (blockName, ANOM_DENSITY_FILE_EXT);
+//         write3DIregBlockToFile (blockName, (char ***) densityData,
+//                       numLayers, layerDimensions, sizeof(float));
       }
       if (susCalc && Random==0)
       {
