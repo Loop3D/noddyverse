@@ -1047,10 +1047,6 @@ int loadRandomPlug(options)
 
 	options->mergeEvents = 0;
 
-	options->positionX = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
-	options->positionY = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
-	options->positionZ = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
-
 	options->dipDirection = 360.0 * xrshr128p_next_double(&state);
 	//options->dip = 90.0 * xrshr128p_next_double(&state);
 	options->dip = 90.0 ; //vitaliy
@@ -1059,9 +1055,30 @@ int loadRandomPlug(options)
 	options->radius = 2000.0 * xrshr128p_next_double(&state);
 	options->apicalAngle = 10.0 + 80.0 * xrshr128p_next_double(&state);
 	options->BValue = 200 + 4800.0 * xrshr128p_next_double(&state);
-	options->axisA = 200 + 800.0 * xrshr128p_next_double(&state);
-	options->axisB = 200 + 800.0 * xrshr128p_next_double(&state);
-	options->axisC = 200 + 800.0 * xrshr128p_next_double(&state);
+
+	options->axisA = 200. + 800.0 * xrshr128p_next_double(&state);
+	options->axisB = 200. + 800.0 * xrshr128p_next_double(&state);
+	options->axisC = 200. + 800.0 * xrshr128p_next_double(&state);
+
+	// Define the model dimensions (Note: these values are also hardcoded elsewhere).
+	double sizeX = 6400.;
+	double sizeY = 6400.;
+	double sizeZ = 3200.;
+
+	// Define horizontal paddings.
+	double paddingX = 1200.;
+	double paddingY = 1200.;
+
+	// Note that axisA corresponds to the Z-axis.
+	double maxAxisBC = (options->axisB > options->axisC ? options->axisB : options->axisC);
+	double shiftX = paddingX + maxAxisBC;
+	double shiftY = paddingY + maxAxisBC;
+	double shiftZ = options->axisA;
+
+	// Define position so that it does not overlap with the boundaries, and add horizontal paddings.
+	options->positionX = shiftX + (sizeX - 2. * shiftX) * xrshr128p_next_double(&state);
+	options->positionY = shiftY + (sizeY - 2. * shiftY) * xrshr128p_next_double(&state);
+	options->positionZ = shiftZ + (sizeZ - 2. * shiftZ) * xrshr128p_next_double(&state);
 
 	if (options->type != ELLIPSOIDAL_PLUG)
 		pitch = 0.0;
