@@ -447,6 +447,8 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
    for (i = 0, zEnd = zStart; i < numLayers; i++)
       zEnd = zEnd - cubeSizes[i];
 
+/*
+// Vitaliy commented writing of .g00 and .g12 files.
 
    sprintf((char *) dxfname,"%s.dxf",blockName);
 
@@ -490,6 +492,7 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
   // }
    //else
   // {
+ */
       //if (densityCalc && Random==0) //vitaliy
       {
          // Vitaliy: write model to binary file.
