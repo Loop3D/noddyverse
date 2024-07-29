@@ -1026,6 +1026,20 @@ int loadRandomFoliation(options)
 	return (TRUE);
 }
 
+// Returns random sign +1 or -1.
+double generateRandomSign(xrshr128p_state_t* state)
+{
+	// Random number in range [-1, 1).
+	double r = 2. * xrshr128p_next_double(state) - 1.0;
+	double sign;
+	if (r >= 0) {
+		sign = +1.0;
+	} else {
+		sign = -1.0;
+	}
+	return sign;
+}
+
 int loadRandomPlug(options)
 	PLUG_OPTIONS *options; {
 	double pitch;
@@ -1089,6 +1103,11 @@ int loadRandomPlug(options)
 	//options->alterationZones = TRUE;
 
 	loadRandomProperties(-1, &(options->properties));
+
+	double sign = generateRandomSign(&state);
+
+	// Adjust density to allow negative anomalies.
+	options->properties.density = sign * options->properties.density;
 
 	convrt(options->dip - 90.0, options->dipDirection, pitch, TRUE);
 	rotset(options->dip - 90.0, options->dipDirection, pitch,
