@@ -42,7 +42,7 @@ int exit_nicely();
 typedef unsigned char String20[21];
 extern WINDOW historyWindow;
 
-xrshr128p_state_t *state; //  random number generator seed updated after each call
+xrshr128p_state_t state; //  random number generator seed updated after each call
 int unitNumber = 1; //unique lithology code
 int Random = TRUE; //Generate a random Noddy model
 int DataBase; //Upload random model to database instead of to file
