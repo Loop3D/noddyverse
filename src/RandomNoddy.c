@@ -41,7 +41,7 @@ int exit_nicely();
 typedef unsigned char String20[21];
 extern WINDOW historyWindow;
 
-xrshr128p_state_t *state; //  random number generator seed updated after each call
+xrshr128p_state_t state; //  random number generator seed updated after each call
 int unitNumber = 1; //unique lithology code
 int Random = TRUE; //Generate a random Noddy model
 int DataBase; //Upload random model to database instead of to file
@@ -1208,7 +1208,7 @@ int petrophysics(  int litho,  double *density, double *magsus)
 
   X=sqrt(-2.0*log(U)) * cos(2.0*3.1415927*V); //where U & V are random numbers between 0 & 1
   Y=sqrt(-2.0*log(U)) * sin(2.0*3.1415927*V); //produces pairs of independaent normally dist random numbers using
-  	  	  	  	  	  	  	  	  	  	  	  //Box–Muller transform
+  	  	  	  	  	  	  	  	  	  	  	  //Boxï¿½Muller transform
 
   *density=X*(PPHYS_ROCK[litho].density_sd)+PPHYS_ROCK[litho].density_mean;
 
