@@ -1027,17 +1027,9 @@ int loadRandomFoliation(options)
 }
 
 // Returns random sign +1 or -1.
-double generateRandomSign(xrshr128p_state_t* state)
+int generateRandomSign()
 {
-	// Random number in range [-1, 1).
-	double r = 2. * xrshr128p_next_double(state) - 1.0;
-	double sign;
-	if (r >= 0) {
-		sign = +1.0;
-	} else {
-		sign = -1.0;
-	}
-	return sign;
+	return (rand() % 2) * 2 - 1;
 }
 
 int loadRandomPlug(options)
@@ -1104,7 +1096,7 @@ int loadRandomPlug(options)
 
 	loadRandomProperties(-1, &(options->properties));
 
-	double sign = generateRandomSign(&state);
+	int sign = generateRandomSign();
 
 	// Adjust density to allow negative anomalies.
 	options->properties.density = sign * options->properties.density;
