@@ -92,7 +92,7 @@ int readRandomHist() {
 	gettimeofday(&start, NULL);
 
 	srand(start.tv_usec);   //vitaliy // Initialization, should only be called once.
-	int ellipses2 = 1+(rand()%3);  //vitaliy    // Returns a pseudo-random integer between 0 and RAND_MAX.
+	int ellipses2 = 1+(rand()%5);  //vitaliy    // Returns a pseudo-random integer between 0 and RAND_MAX.
 	//int numEvents = 5; // number of random events, including base STRATIGRAPHY and first TILT
 	int numEvents = 2+ellipses2; //vitaliy // number of random events, including base STRATIGRAPHY and first TILT
 
@@ -475,7 +475,8 @@ int loadRandomBlockOpts()
 
 	sprintf(vname, "View1");
 	//viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
-	viewOptions = newViewOptions(vname, 0, 0, 3200, 6400, 6400, 3200, 100, 100); //vitaliy
+	//viewOptions = newViewOptions(vname, 0, 0, 3200, 6400, 6400, 3200, 100, 100); //vitaliy
+	viewOptions = newViewOptions(vname, 0, 0, 1920, 4800, 2880, 1920, 60, 60); //vitaliy - jupiter, nzyx = (32, 80, 48)
 
 	/*blockViewOptions->originX = 0;
 	 blockViewOptions->originY = 0;
@@ -1054,32 +1055,32 @@ int loadRandomPlug(options)
 	options->mergeEvents = 0;
 
 	options->dipDirection = 360.0 * xrshr128p_next_double(&state);
-	//options->dip = 90.0 * xrshr128p_next_double(&state);
-	options->dip = 90.0 ; //vitaliy
+	options->dip = 90.0 * xrshr128p_next_double(&state);
+	//options->dip = 90.0 ; //vitaliy
 	options->axisPitch = 90.0 * xrshr128p_next_double(&state);
 
 	options->radius = 2000.0 * xrshr128p_next_double(&state);
 	options->apicalAngle = 10.0 + 80.0 * xrshr128p_next_double(&state);
 	options->BValue = 200 + 4800.0 * xrshr128p_next_double(&state);
 
-	options->axisA = 200. + 800.0 * xrshr128p_next_double(&state);
-	options->axisB = 200. + 800.0 * xrshr128p_next_double(&state);
-	options->axisC = 200. + 800.0 * xrshr128p_next_double(&state);
+	options->axisA = 120. + 840.0 * xrshr128p_next_double(&state);
+	options->axisB = 120. + 840.0 * xrshr128p_next_double(&state);
+	options->axisC = 120. + 840.0 * xrshr128p_next_double(&state);
 
 	// Define the model dimensions (Note: these values are also hardcoded elsewhere).
-	double sizeX = 6400.;
-	double sizeY = 6400.;
-	double sizeZ = 3200.;
+	double sizeX = 4800.;
+	double sizeY = 2880.;
+	double sizeZ = 1920.;
 
 	// Define horizontal paddings.
-	double paddingX = 1200.;
-	double paddingY = 1200.;
+	//double paddingX = 1200.;
+	//double paddingY = 1200.;
 
 	// Note that axisA corresponds to the Z-axis.
-	double maxAxisBC = (options->axisB > options->axisC ? options->axisB : options->axisC);
-	double shiftX = paddingX + maxAxisBC;
-	double shiftY = paddingY + maxAxisBC;
-	double shiftZ = options->axisA;
+	//double maxAxisBC = (options->axisB > options->axisC ? options->axisB : options->axisC);
+	double shiftX = 0.; //paddingX + maxAxisBC;
+	double shiftY = 0.; //paddingY + maxAxisBC;
+	double shiftZ = 0.;
 
 	// Define position so that it does not overlap with the boundaries, and add horizontal paddings.
 	options->positionX = shiftX + (sizeX - 2. * shiftX) * xrshr128p_next_double(&state);

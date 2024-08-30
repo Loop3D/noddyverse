@@ -12,7 +12,7 @@ PPHYS PPHYS_ROCK[35]={
 "Maf_Dyke_Sill", Dyke, Intrusive, Mafic_Dyke_Sill, 2.793914, .015759637, -2.119223, .85376583, 0,
 
 //"Granite", Plug, Intrusive, Granite , 2.691577, .094589692, -2.455842, .86575449, 1,
-"Granite", Plug, Intrusive, Granite , 0.75, .125, -2.455842, .86575449, 0, //vitaliy
+"Granite", Plug, Intrusive, Granite , 0.3, .075, -2.455842, .86575449, 0, //vitaliy
 "Peridotite", Plug, Intrusive, Peridotite, 2.851076, .154478049, -1.158807, .4390425, 0,
 "Porphyry", Plug, Intrusive, Porphyry, 2.840024, .128971814, -2.613833, .99194475, 1,
 "Pyxen_Hbnd", Plug, Intrusive, Pyxenite_Hbndite, 3.194379, .253322535, -1.946615, 1.03641373, 0,
