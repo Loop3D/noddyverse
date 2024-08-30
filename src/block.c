@@ -2923,9 +2923,10 @@ int write3DModelToBinaryFile(const char *filename, const float ***data, int nx, 
        return (FALSE);
     }
 
+    // Note that the data order is (nz, nx, ny).
     for (int k = 0; k < nz; k++) {
-        for (int j = 0; j < ny; j++) {
-            fwrite(data[k][j], sizeof(float), nx, fp);
+        for (int i = 0; i < nx; i++) {
+            fwrite(data[k][i], sizeof(float), ny, fp);
         }
     }
 
