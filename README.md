@@ -1,6 +1,6 @@
 # noddyverse 
 
-## With the closure of Cloustor, which stored the Noddyverse files, direct  programmatic access to the Noddyverse is unfortunately not possible at the moment. If you want a link to download the entire model suite as a set of 343 tar files (one for each event sequence) you can email me and I will send you a link. Mark Jessell mark.jessell@uwa.edu.au Jan/2024
+## With the closure of Cloustor, which stored the Noddyverse files, direct  programmatic access to the Noddyverse is unfortunately not possible at the moment. Happilly you can download the entire model suite once again thanks to the support of the Australian National Computational Infrastructure: [NCI Storage] (https://thredds.nci.org.au/thredds/catalog/catalogs/tm64/noddyverse/noddyverse.html) Sept/2024
 
 
 
