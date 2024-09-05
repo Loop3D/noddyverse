@@ -1,6 +1,6 @@
 # noddyverse 
 
-## With the closure of Cloustor, which stored the Noddyverse files, direct  programmatic access to the Noddyverse is unfortunately not possible at the moment. Happilly you can download the entire model suite once again thanks to the support of the Australian National Computational Infrastructure.   [NCI Storage:](https://thredds.nci.org.au/thredds/catalog/catalogs/tm64/noddyverse/noddyverse.html) Sept/2024
+## With the closure of Cloustor, which stored the Noddyverse files, direct  programmatic access to the Noddyverse is unfortunately not possible at the moment. Happilly you can download the entire model suite once again thanks to the support of the Australian National Computational Infrastructure.   [NCI Storage Link](https://thredds.nci.org.au/thredds/catalog/catalogs/tm64/noddyverse/noddyverse.html) Sept/2024
 
 
 
