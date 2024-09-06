@@ -476,7 +476,8 @@ int loadRandomBlockOpts()
 	sprintf(vname, "View1");
 	//viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
 	//viewOptions = newViewOptions(vname, 0, 0, 3200, 6400, 6400, 3200, 100, 100); //vitaliy
-	viewOptions = newViewOptions(vname, 0, 0, 1920, 4800, 2880, 1920, 60, 60); //vitaliy - jupiter, nzyx = (32, 80, 48)
+	//viewOptions = newViewOptions(vname, 0, 0, 1920, 4800, 2880, 1920, 60, 60); //vitaliy - jupiter, nzyx = (32, 80, 48)
+	viewOptions = newViewOptions(vname, 0, 0, 1920, 5760, 2880, 1920, 30, 30); //vitaliy - jupiter, nzyx = (64, 192, 96)
 
 	/*blockViewOptions->originX = 0;
 	 blockViewOptions->originY = 0;
@@ -1067,8 +1068,8 @@ int loadRandomPlug(options)
 	options->axisB = 120. + 840.0 * xrshr128p_next_double(&state);
 	options->axisC = 120. + 840.0 * xrshr128p_next_double(&state);
 
-	// Define the model dimensions (Note: these values are also hardcoded elsewhere).
-	double sizeX = 4800.;
+	// Define the model dimensions (Note: these values are also hardcoded above).
+	double sizeX = 5760.;
 	double sizeY = 2880.;
 	double sizeZ = 1920.;
 
@@ -1076,10 +1077,8 @@ int loadRandomPlug(options)
 	//double paddingX = 1200.;
 	//double paddingY = 1200.;
 
-	// Note that axisA corresponds to the Z-axis.
-	//double maxAxisBC = (options->axisB > options->axisC ? options->axisB : options->axisC);
-	double shiftX = 0.; //paddingX + maxAxisBC;
-	double shiftY = 0.; //paddingY + maxAxisBC;
+	double shiftX = 0.;
+	double shiftY = 0.;
 	double shiftZ = 0.;
 
 	// Define position so that it does not overlap with the boundaries, and add horizontal paddings.
