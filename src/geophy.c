@@ -385,8 +385,8 @@ float ****densityData,     ****magSusData,      ****remSusDecData,
    }
    
    return (TRUE);
-} 
- 
+}
+
 int
 #if XVT_CC_PROTO
 writeOutBlockModels (char *blockName, int numLayers, int **layerDimensions,
@@ -447,6 +447,8 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
    for (i = 0, zEnd = zStart; i < numLayers; i++)
       zEnd = zEnd - cubeSizes[i];
 
+/*
+// Vitaliy commented writing of .g00 and .g12 files.
 
    sprintf((char *) dxfname,"%s.dxf",blockName);
 
@@ -490,11 +492,16 @@ float ***densityData,     ***magSusData,      ***remSusDecData,
   // }
    //else
   // {
-      if (densityCalc && Random==0)
+ */
+      //if (densityCalc && Random==0) //vitaliy
       {
-         addFileExtention (blockName, ANOM_DENSITY_FILE_EXT);
-         write3DIregBlockToFile (blockName, (char ***) densityData,
-                       numLayers, layerDimensions, sizeof(float));
+         // Vitaliy: write model to binary file.
+         addFileExtention(blockName, ".bin");
+         write3DModelToBinaryFile(blockName, densityData, nx, ny, numLayers);
+
+//         addFileExtention (blockName, ANOM_DENSITY_FILE_EXT);
+//         write3DIregBlockToFile (blockName, (char ***) densityData,
+//                       numLayers, layerDimensions, sizeof(float));
       }
       if (susCalc && Random==0)
       {
@@ -1168,7 +1175,7 @@ DOUBLE_2D_IMAGE *magImage, *grvImage;
       aniCalc = remCalc = altZones = FALSE;
 
           /* Only calc alteration Zones if we have an event with one */
-      altZones =  checkHistoryForAlterations ();
+      altZones =  checkHistoryForAlterations ();//vitaliy
           
           /* Only calc remanence or anisotropy if we have a strat with it used in */
       for (i = 0; i < numStrat; i++)

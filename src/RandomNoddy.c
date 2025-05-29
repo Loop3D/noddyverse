@@ -12,6 +12,7 @@
 //#include <libpq-fe.h>
 #include "petrophysics.h"
 #include "petrophy_defs.h"
+#include "randomFaultsManager.h"
 
 
 #define DEBUG(X)    
@@ -30,6 +31,10 @@ extern THREED_VIEW_OPTIONS threedViewOptions;
 extern double iscale; /* scaling factor for geology */
 extern FILE_SPEC topoFileSpec;
 extern double minTopoValue, maxTopoValue;
+// extern void initRandomFaultManager(FaultManager *fltsManager, xrshr128p_state_t state); Version in copy, not compiling for the moment
+extern void freeRandomFaultManager(FaultManager *fltsManager);
+extern void randomFault(RandomFault *fault);
+extern void initRandomFaultManager(FaultManager *fltsManager);
 
 extern int batchExecution;
 extern COLOR backgroundColor;
@@ -50,6 +55,7 @@ char time_stamp[100]; //microsecond timestamp
 extern int rocktypes[5]; //lithology classes for petrophysics
 
 int RandomNoddy(char *output , int DataBase) {
+
  //	const char *conninfo;
  //	PGconn *conn;
 	struct timeval start;
@@ -79,13 +85,38 @@ int RandomNoddy(char *output , int DataBase) {
 
 	report_Random_status(output, DataBase);
 
-	doGeophysics(BLOCK_AND_ANOM, viewOptions, geophOptions, output, output,
-			NULL, 0, NULL, NULL, NULL);
+	// Comments Geophysics for generation of only the geometry block
+	//doGeophysics(BLOCK_AND_ANOM, viewOptions, geophOptions, output, output,
+	//		NULL, 0, NULL, NULL, NULL);
+	doGeophysics(BLOCK_ONLY, viewOptions, geophOptions, output, output,
+			NULL, 0, NULL, NULL, NULL); //vitaliy
+
+	// Surface output
+	// Vulcan_output(output);
+
+	threedViewOptions.fillType = 5;
+
+	// do3dStratMap(&threedData, filename);
+	// char dxfname[250];
+	// sprintf((char *) dxfname,"%s.vul",output);
+	addFileExtention(output, ".vul");
+	do3dStratMap((THREED_IMAGE_DATA *) NULL, output);
+
+	threedViewOptions.fillType = 3;
 
 }
 
 int readRandomHist() {
-	int numEvents = 5; // number of random events, including base STRATIGRAPHY and first TILT
+	struct timeval start;
+	gettimeofday(&start, NULL);
+
+	srand(start.tv_usec);   //vitaliy // Initialization, should only be called once.
+	// int ellipses2 = 1+(rand()%5);  //vitaliy    // Returns a pseudo-random integer between 0 and RAND_MAX excluded. Here RAND_MAX = 5.
+
+	int numEvents = 1; //amandine // stratigraphy
+
+	// numEvents += ellipses2; //vitaliy // add number of random events
+
 
 	loadRandomHistory(numEvents);
 
@@ -123,7 +154,7 @@ ReportRandomIcons(FILE *out) {
 }
 
 static int loadRandomHistory(numEvents)
-	int numEvents; {
+	int numEvents;{
 	static char *eventTypes[] = { "STRATIGRAPHY", "FOLD", "FAULT",
 			"UNCONFORMITY", "SHEAR_ZONE", "DYKE", "PLUG", "STRAIN", "TILT",
 			"FOLIATION", "LINEATION", "IMPORT", "STOP", "GENERIC", "" };
@@ -147,16 +178,31 @@ static int loadRandomHistory(numEvents)
 	wip = (WINDOW_INFO*) &batchWindowInfo;
 	historyWindow = win; /* store as a global */
 
+	// For fault modelling
+	FaultManager fltMng;
+
+	initRandomFaultManager(&fltMng);
+
+	int num_fault_waiting = fltMng.total_fault;
+
+	int current_family = 0;
+	int current_fault = 0;
+	numEvents += num_fault_waiting;
+
 	numEventsInFile = numEvents;
+	int rngfault = 0;
 	{
-		for (event = 0; event < numEventsInFile; event++) {
+		for (unsigned event = 0; event < numEventsInFile; event++) {
+
+			rngfault = 0;
+
 			if (event == 0)
 				type2 = STRATIGRAPHY;
-			else if (event == 1)
-				type2 = TILT;
-			else {
-				type = (int) (xrshr128p_next(&state) % 10) + 1;
 
+			else if ( num_fault_waiting < (numEvents - event))
+			{
+				rngfault = 1;
+				type = (int) (xrshr128p_next(&state) % 10) + 1;
 				if (type == 1 || type == 2)
 					type2 = FOLD;
 				else if (type == 3 || type == 4)
@@ -171,6 +217,9 @@ static int loadRandomHistory(numEvents)
 					type2 = PLUG;
 				else
 					type2 = TILT;
+			}
+			else{
+				type2 = FAULT; // Adding last faults
 			}
 
 			//printf("%d %d %d\n",query,numEvents,event, type);
@@ -221,6 +270,7 @@ static int loadRandomHistory(numEvents)
 				break;
 			}
 			case FAULT: {
+				// Adding Fault events according to fracturation family
 				FAULT_OPTIONS *options;
 
 				options = (FAULT_OPTIONS*) xvt_mem_zalloc(
@@ -232,7 +282,25 @@ static int loadRandomHistory(numEvents)
 				}
 				p->options = (char*) options;
 				setDefaultOptions(p);
-				loadRandomFault(options);
+
+				RandomFault fault;
+				if (rngfault == 1){
+					randomFault(&fault);
+				}
+				else {
+
+					fault = fltMng.families[current_family].faults[current_fault];
+
+					num_fault_waiting -= 1;
+					current_fault += 1;
+					if (fltMng.families[current_family].faults_number <= current_fault && current_family < (int)fltMng.family_number)
+					{
+						current_family += 1;
+						current_fault = 0;
+					}
+				}
+
+				loadRandomFault(options, fault);
 				break;
 			}
 			case UNCONFORMITY: {
@@ -448,6 +516,8 @@ static int loadRandomHistory(numEvents)
 		// printf("loadrandhist total object = %d\n",query,count);
 	}
 
+	freeRandomFaultManager(&fltMng);
+
 	return (TRUE);
 }
 
@@ -465,7 +535,8 @@ int loadRandomBlockOpts()
 	currentView = 1;
 
 	sprintf(vname, "View1");
-	viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
+	//viewOptions = newViewOptions(vname, 0, 0, 4000, 4000, 4000, 4000, 20, 20);
+	viewOptions = newViewOptions(vname, 0, 0, 3200, 6400, 6400, 3200, 100, 100); //vitaliy
 
 	/*blockViewOptions->originX = 0;
 	 blockViewOptions->originY = 0;
@@ -563,7 +634,8 @@ int loadRandomGpsOpts() {
 	geophysicsOptions.constantBoxDepth = 0.0;
 	geophysicsOptions.cleverBoxRatio = 1.0;
 
-	geophysicsOptions.deformableRemanence = FALSE;
+	geophysicsOptions.deformableRemanence = TRUE;
+	//geophysicsOptions.deformableRemanence = FALSE; //vitaliy
 
 	geophysicsOptions.deformableAnisotropy = FALSE;
 
@@ -879,36 +951,38 @@ int loadRandomDyke(options)
 	return (TRUE);
 }
 
-int loadRandomFault(options)
-	FAULT_OPTIONS *options; {
+int loadRandomFault(options, fault)
+	FAULT_OPTIONS *options; RandomFault fault;
+{
 	int i;
-	double pitch, dip;
+	double pitch;
+	double dip;
 	char temp[100], strVal[100];
 
 	// printf("FAAAAULLTSSS\n");
 
 	options->type = FAULT_EVENT;
 
-	options->geometry = TRANSLATION;
+	options->geometry = ELLIPTICAL;
 
 	options->movement = BOTH;
 
-	options->positionX = 2000.0 + 2000.0 * xrshr128p_next_double(&state);
-	options->positionY = 2000.0 + 2000.0 * xrshr128p_next_double(&state);
-	options->positionZ = 2000.0 + 2000.0 * xrshr128p_next_double(&state);
+	options->positionX = fault.posX;
+	options->positionY = fault.posY;
+	options->positionZ = fault.posZ;
 
-	options->dipDirection = 360.0 * xrshr128p_next_double(&state);
-	options->dip = 90.0 * sqrt(xrshr128p_next_double(&state));
-	options->pitch = 90.0 * xrshr128p_next_double(&state);
+	options->dipDirection = fault.dipdir;
+	options->dip = fault.dip;
+	options->pitch = fault.pitch;
 
-	options->slip = 2000.0 * xrshr128p_next_double(&state);
+	options->slip = fault.slip;
 	options->rotation = 0.0;
 
 	options->amplitude = 100.0;
 	options->radius = 100.0;
-	options->xAxis = 0.0;
-	options->yAxis = 0.0;
-	options->zAxis = 0.0;
+	options->xAxis = fault.Xaxis;
+	options->yAxis = fault.Yaxis;
+	options->zAxis = fault.Zaxis;
 	options->cylindricalIndex = 0.0;
 	options->profilePitch = 0.0;
 
@@ -1015,6 +1089,12 @@ int loadRandomFoliation(options)
 	return (TRUE);
 }
 
+// Returns random sign +1 or -1.
+int generateRandomSign()
+{
+	return (rand() % 2) * 2 - 1;
+}
+
 int loadRandomPlug(options)
 	PLUG_OPTIONS *options; {
 	double pitch;
@@ -1023,7 +1103,8 @@ int loadRandomPlug(options)
 
 	//  printf("PLUGGGSSSSSS\n");
 
-	plugit = xrshr128p_next(&state) % 4;
+	//plugit = xrshr128p_next(&state) % 4;
+	plugit = 3; //vitaliy
 	if (plugit == 0)
 		options->type = CYLINDRICAL_PLUG;
 	else if (plugit == 1)
@@ -1035,29 +1116,53 @@ int loadRandomPlug(options)
 
 	options->mergeEvents = 0;
 
-	options->positionX = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
-	options->positionY = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
-	options->positionZ = 1000.0 + 3000.0 * xrshr128p_next_double(&state);
-
 	options->dipDirection = 360.0 * xrshr128p_next_double(&state);
-	options->dip = 90.0 * xrshr128p_next_double(&state);
+	//options->dip = 90.0 * xrshr128p_next_double(&state);
+	options->dip = 90.0 ; //vitaliy
 	options->axisPitch = 90.0 * xrshr128p_next_double(&state);
 
 	options->radius = 2000.0 * xrshr128p_next_double(&state);
 	options->apicalAngle = 10.0 + 80.0 * xrshr128p_next_double(&state);
 	options->BValue = 200 + 4800.0 * xrshr128p_next_double(&state);
-	options->axisA = 200 + 3800.0 * xrshr128p_next_double(&state);
-	options->axisB = 200 + 3800.0 * xrshr128p_next_double(&state);
-	options->axisC = 200 + 3800.0 * xrshr128p_next_double(&state);
+
+	options->axisA = 200. + 800.0 * xrshr128p_next_double(&state);
+	options->axisB = 200. + 800.0 * xrshr128p_next_double(&state);
+	options->axisC = 200. + 800.0 * xrshr128p_next_double(&state);
+
+	// Define the model dimensions (Note: these values are also hardcoded elsewhere).
+	double sizeX = 6400.;
+	double sizeY = 6400.;
+	double sizeZ = 3200.;
+
+	// Define horizontal paddings.
+	double paddingX = 1200.;
+	double paddingY = 1200.;
+
+	// Note that axisA corresponds to the Z-axis.
+	double maxAxisBC = (options->axisB > options->axisC ? options->axisB : options->axisC);
+	double shiftX = paddingX + maxAxisBC;
+	double shiftY = paddingY + maxAxisBC;
+	double shiftZ = options->axisA;
+
+	// Define position so that it does not overlap with the boundaries, and add horizontal paddings.
+	options->positionX = shiftX + (sizeX - 2. * shiftX) * xrshr128p_next_double(&state);
+	options->positionY = shiftY + (sizeY - 2. * shiftY) * xrshr128p_next_double(&state);
+	options->positionZ = shiftZ + (sizeZ - 2. * shiftZ) * xrshr128p_next_double(&state);
 
 	if (options->type != ELLIPSOIDAL_PLUG)
 		pitch = 0.0;
 	else
 		pitch = options->axisPitch;
 
-	options->alterationZones = NONE_ALTERATION;
+	options->alterationZones = NONE_ALTERATION; //vitaliy
+	//options->alterationZones = TRUE;
 
 	loadRandomProperties(-1, &(options->properties));
+
+	int sign = generateRandomSign();
+
+	// Adjust density to allow negative anomalies.
+	options->properties.density = sign * options->properties.density;
 
 	convrt(options->dip - 90.0, options->dipDirection, pitch, TRUE);
 	rotset(options->dip - 90.0, options->dipDirection, pitch,
@@ -1172,9 +1277,10 @@ int loadRandomUnconformity(options)
 int loadRandomStratigraphy(options)
 	STRATIGRAPHY_OPTIONS *options; {
 	int i;
-	int maxLayers = 5; // maximum number of layers (minimum is 2)
+	int maxLayers = 20; // maximum number of layers (minimum is 5)
 
-	options->numLayers = (xrshr128p_next(&state) % 5) + 2;
+	options->numLayers = (xrshr128p_next(&state) % 6) + 15;
+	// options->numLayers = 5; //vitaliy//amandine
 	if (options->properties)
 		xvt_mem_free((char* ) options->properties);
 	if (!(options->properties = (LAYER_PROPERTIES*) xvt_mem_zalloc(
@@ -1244,13 +1350,15 @@ int loadRandomProperties(layer, options)
 	}
 	else if(layer==-1) //plug
 	{
-		lithocode=(xrshr128p_next(&state) % rocktypes[1]) +rocktypes[0];
+		//lithocode=(xrshr128p_next(&state) % rocktypes[1]) +rocktypes[0];
+		lithocode=2; //granite //vitaliy
 		petrophysics(lithocode, &density, &magsus );
 	}
 	else //strat
 	{
 		if(layer==0)
-			stratcode=(xrshr128p_next(&state) % 3);
+			//stratcode=(xrshr128p_next(&state) % 3);
+			stratcode=2;
 		if(stratcode==0) //Met
 		{
 			lithocode=(xrshr128p_next(&state) % rocktypes[2])+rocktypes[0]+rocktypes[1];
@@ -1265,6 +1373,7 @@ int loadRandomProperties(layer, options)
 		else //Sed
 		{
 			lithocode=(xrshr128p_next(&state) % rocktypes[4])+rocktypes[0]+rocktypes[1]+rocktypes[2]+rocktypes[3];
+			// lithocode=30; //limestone //vitaliy
 			petrophysics( lithocode, &density, &magsus );
 
 		}
@@ -1284,7 +1393,8 @@ int loadRandomProperties(layer, options)
 		cum_height += options->height;
 		options->height = cum_height;
 	}
-	options->applyAlterations = FALSE;
+	//options->applyAlterations = FALSE; //vitaliy
+	options->applyAlterations = TRUE;
 
 	options->density = density;
 	options->anisotropicField = 0;
@@ -1294,6 +1404,7 @@ int loadRandomProperties(layer, options)
 	options->sus_dip = 0;
 	options->sus_dipDirection = 0;
 	options->sus_pitch = 0;
+	//options->remanentMagnetization = 1; //vitaliy
 	options->remanentMagnetization = 0;
 	options->inclination = 0;
 	options->angleWithNorth = 0;
@@ -2072,4 +2183,21 @@ int reportRandomProperties(stream, options)
 	return (TRUE);
 }
 
+// void Vulcan_output(filename)
+// char *filename;
+// {
+// 	// THREED_IMAGE_DATA threedData;
 
+// 	// init3dDrawing(&threedData);
+
+// 	// setup3dDrawing(&threedData);
+
+// 	threedViewOptions.fillType = 5;
+
+// 	// do3dStratMap(&threedData, filename);
+
+// 	do3dStratMap ((THREED_IMAGE_DATA *) NULL, filename);
+
+// 	threedViewOptions.fillType = 3;
+
+// }

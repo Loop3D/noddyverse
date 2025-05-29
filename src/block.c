@@ -2914,6 +2914,26 @@ int dataSize;
    return (TRUE);
 }
 
+// Vitaliy: write 3D model to binary file.
+int write3DModelToBinaryFile(const char *filename, const float ***data, int nx, int ny, int nz)
+{
+    FILE *fp;
+    if (!(fp = (FILE *) fopen(filename, "wb"))) {
+       fprintf(stderr, "Error, Cannot Open %s for Writing.", filename);
+       return (FALSE);
+    }
+
+    // Note that the data order is (nz, nx, ny).
+    for (int k = 0; k < nz; k++) {
+        for (int i = 0; i < nx; i++) {
+            fwrite(data[k][i], sizeof(float), ny, fp);
+        }
+    }
+
+    fclose(fp);
+    return (TRUE);
+}
+
 int 
 #if XVT_CC_PROTO
 write2DBlockToFile (char *filename, char **data,

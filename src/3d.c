@@ -4,7 +4,7 @@
  * Purpose: translation ,rotation and scaling routines for use in  
  *          three dimensional graphics applications.
  *
- * ©1991 Mark M. Owen.  All rights reserved.
+ * ï¿½1991 Mark M. Owen.  All rights reserved.
  *****************************************************************************
  */
 #include "xvt.h"
@@ -181,7 +181,7 @@ register Point2d *p2;
 
 /*****************************************************************************
  *
- * Function:   ApplyTransform(É)
+ * Function:   ApplyTransform(ï¿½)
  *
  * purpose: applies a transformation matrix to a point, with the
  *          result returned at the address supplied for "pt2".
@@ -226,7 +226,7 @@ Matrix3D *xForm;
 
 /*****************************************************************************
  *
- * Function:   Translate(É)
+ * Function:   Translate(ï¿½)
  *
  * purpose: inserts a translation factor into a matrix;
  *
@@ -255,7 +255,7 @@ Fixed dx, dy, dz;
 
 /*****************************************************************************
  *
- * Function:   Rotate(É)
+ * Function:   Rotate(ï¿½)
  *
  * purpose: concatenates the axis rotation matrices to another matrix.
  *
@@ -328,7 +328,7 @@ Fixed p, y, r;
 
 /*****************************************************************************
  *
- * Function:   Scale(É)
+ * Function:   Scale(ï¿½)
  *
  * purpose: concatenates a scaling matrix to another matrix.
  *
@@ -366,7 +366,7 @@ Fixed sx, sy, sz;
 
 /*****************************************************************************
  *
- * Function:   SetInstanceReferenceFrame(É)
+ * Function:   SetInstanceReferenceFrame(ï¿½)
  *
  * purpose: constructs the instance transformation matrix from supplied
  *          parameters (rotations,scaling, and translations).
@@ -428,7 +428,7 @@ Fixed dx, dy, dz; /* translation values by axis */
 
 /*****************************************************************************
  *
- * Function:   SetViewerReferenceFrame(É)
+ * Function:   SetViewerReferenceFrame(ï¿½)
  *
  * purpose: constructs the viewer transformation matrix from supplied
  *          parameters (rotations,scaling, and translations).  copies
